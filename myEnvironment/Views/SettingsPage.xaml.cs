@@ -72,7 +72,7 @@ namespace myEnvironment.Views
             /**/
             try
             {
-                string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=Sqd5/SZpL2C3vip0JkeYt74s7xjSshV0v3kjlFSr36Ka21JJNhuER1JkteEfo2iGz2EK0EmcDnOvwPsojzcEMA==";
+                string storageConnection = "***replace with your azure connection string***";
                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobClient.GetContainerReference("default");
