@@ -1,1 +1,0 @@
-string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=Sqd5/SZpL2C3vip0JkeYt74s7xjSshV0v3kjlFSr36Ka21JJNhuER1JkteEfo2iGz2EK0EmcDnOvwPsojzcEMA==";
