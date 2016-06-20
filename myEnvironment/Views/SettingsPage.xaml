@@ -103,8 +103,8 @@
                                 </ListView.ItemTemplate>
                             </ListView>
                             <StackPanel Orientation="Horizontal">
-                                <Button Click="Get_Data">Get sensor data</Button>
-                                <TextBlock Text="number of hours" />
+                                <Button Click="Import_Data">Import sensor data</Button>
+                                <TextBlock Text="of past number of hours" />
                                 <TextBox Name="Timespan" Text="5"></TextBox>
 
                             </StackPanel>

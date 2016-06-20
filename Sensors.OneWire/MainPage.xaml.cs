@@ -33,7 +33,7 @@ namespace Sensors.OneWire
         StorageFolder storageFolder = ApplicationData.Current.LocalFolder; //.RoamingFolder;
         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         CloudBlobContainer container;
-        bool readSensor2 = false;
+        bool readSensor2 = true;
 
         public MainPage()
         {
@@ -66,7 +66,7 @@ namespace Sensors.OneWire
             _pin4 = GpioController.GetDefault().OpenPin(4, GpioSharingMode.Exclusive);
             _pin17 = GpioController.GetDefault().OpenPin(17, GpioSharingMode.Exclusive);
             //_dht = new Dht11(_pin, GpioPinDriveMode.Input);
-            _dht1 = new Dht11(_pin4, GpioPinDriveMode.Input);
+            _dht1 = new Dht22(_pin4, GpioPinDriveMode.Input);
             if(readSensor2)
                 _dht2 = new Dht11(_pin17, GpioPinDriveMode.Input);
             _timer.Start();
@@ -75,7 +75,9 @@ namespace Sensors.OneWire
             storageTimer.Start();
 
             // move to default.rd...
-            string storageConnection = "***replace with your azure connection string***";
+            //string storageConnection = "***replace with your azure connection string***";
+            string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=AI3l2TUKXfLPS0eLFVmFWoKtXVFRDr /sBfGDrtoikWMejAf7SrkwI2uFfOeyD0nD/blYJvJuLIJIOsdg3cJ2WQ==";
+
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             container = blobClient.GetContainerReference("default"); // container name = sensorId - from Alljoyn (create container in Azure if not exists)

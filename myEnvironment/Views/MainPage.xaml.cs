@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using static myEnvironment.Models.SensorModel;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Windows.Storage;
 
 namespace myEnvironment.Views
 {
@@ -20,10 +21,21 @@ namespace myEnvironment.Views
         List<Ambience> ambDataSet = new List<Ambience>();
         SensorContext db;
         int numBars;
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        protected long lastImport = 0;
         public MainPage()
         {
             InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            if (localSettings.Values["lastImport"] == null)
+            {
+                localSettings.Values["lastImport"] = 0l;
+
+            }
+            else
+            {
+                lastImport = (long)localSettings.Values["lastImport"];
+            }
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -32,7 +44,8 @@ namespace myEnvironment.Views
         }
         public async void LoadData()
         {
-            Busy.SetBusy(true, "getting data");
+            Busy.SetBusy(true, "loading data");
+
             await Task.Delay(400);
             db = new SensorContext();
 
