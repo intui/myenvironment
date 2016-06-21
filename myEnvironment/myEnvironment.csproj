@@ -99,6 +99,7 @@
     <None Include="myEnvironment_StoreKey.pfx" />
     <None Include="myEnvironment_TemporaryKey.pfx" />
     <None Include="project.json" />
+    <PRIResource Include="resources\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">

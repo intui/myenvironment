@@ -24,7 +24,7 @@ namespace myEnvironment.Services.AzureServices.Blob
             long itemTicks = 0;
             try
             {
-                string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=AI3l2TUKXfLPS0eLFVmFWoKtXVFRDr /sBfGDrtoikWMejAf7SrkwI2uFfOeyD0nD/blYJvJuLIJIOsdg3cJ2WQ==";
+                string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=** your key **";
                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobClient.GetContainerReference(sensorId);

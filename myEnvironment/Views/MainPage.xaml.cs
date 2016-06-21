@@ -29,7 +29,7 @@ namespace myEnvironment.Views
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
             if (localSettings.Values["lastImport"] == null)
             {
-                localSettings.Values["lastImport"] = 0l;
+                localSettings.Values["lastImport"] = 0L;
 
             }
             else
@@ -45,6 +45,9 @@ namespace myEnvironment.Views
         public async void LoadData()
         {
             Busy.SetBusy(true, "loading data");
+
+            long lastUpdatedTicks = (long)localSettings.Values["lastImport"];
+            localSettings.Values["lastImport"] = await Services.AzureServices.Blob.AzureBlobService.Get_Data(7*24, lastUpdatedTicks);
 
             await Task.Delay(400);
             db = new SensorContext();

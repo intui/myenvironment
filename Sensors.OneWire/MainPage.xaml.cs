@@ -76,7 +76,7 @@ namespace Sensors.OneWire
 
             // move to default.rd...
             //string storageConnection = "***replace with your azure connection string***";
-            string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=AI3l2TUKXfLPS0eLFVmFWoKtXVFRDr /sBfGDrtoikWMejAf7SrkwI2uFfOeyD0nD/blYJvJuLIJIOsdg3cJ2WQ==";
+            string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=X7sIT9AHPXYnECV3T/SjA1fPheJbvHhGzw37OkfifslJvm4VkG1jFcXrGCF20cnciHdQ73CCTPltaanNsUVFHA==";
 
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
