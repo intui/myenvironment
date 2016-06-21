@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using static myEnvironment.Models.SensorModel;
 
 namespace myEnvironment.Services.AzureServices.Blob
@@ -24,7 +25,11 @@ namespace myEnvironment.Services.AzureServices.Blob
             long itemTicks = 0;
             try
             {
-                string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=** your key **";
+                var resources = ResourceLoader.GetForCurrentView("Resources");
+
+                var blobStorageKey = resources.GetString("BlobStorageKey");
+
+                string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=" + blobStorageKey;
                 CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobClient.GetContainerReference(sensorId);

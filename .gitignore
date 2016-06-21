@@ -248,3 +248,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 myEnvironment/resources/secret/Resources.resw
+myEnvironment/resources/secret/Resources.resw
