@@ -3,6 +3,7 @@
 
 # Custom
 resources/Resources.resw
+resources/secret
 
 # User-specific files
 *.suo
