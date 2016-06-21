@@ -23,14 +23,15 @@ namespace myEnvironment.Views
         int numBars;
         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         protected long lastImport = 0;
+        protected List<Guid> sensorList = new List<Guid>();
         public MainPage()
         {
             InitializeComponent();
-            NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
+            NavigationCacheMode = NavigationCacheMode.Enabled;
+            sensorList = (List<Guid>)localSettings.Values["sensorList"];
             if (localSettings.Values["lastImport"] == null)
             {
                 localSettings.Values["lastImport"] = 0L;
-
             }
             else
             {
@@ -39,24 +40,35 @@ namespace myEnvironment.Views
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            LoadData();
-            base.OnNavigatedTo(e);
+            if (sensorList == null || sensorList.Count == 0)
+            {
+                //Template10.Services.NavigationService.NavigationService.GetForFrame(Frame).Navigate(typeof(SettingsPage));
+                Frame.Navigate(typeof(SettingsPage));
+            }
+            else
+            {
+                LoadData();
+                base.OnNavigatedTo(e);
+            }
         }
+
         public async void LoadData()
         {
-            Busy.SetBusy(true, "loading data");
+            {
+                Busy.SetBusy(true, "loading data");
 
-            long lastUpdatedTicks = (long)localSettings.Values["lastImport"];
-            localSettings.Values["lastImport"] = await Services.AzureServices.Blob.AzureBlobService.Get_Data(7*24, lastUpdatedTicks);
+                long lastUpdatedTicks = (long)localSettings.Values["lastImport"];
+                localSettings.Values["lastImport"] = await Services.AzureServices.Blob.AzureBlobService.Get_Data(7 * 24, lastUpdatedTicks);
 
-            await Task.Delay(400);
-            db = new SensorContext();
+                await Task.Delay(400);
+                db = new SensorContext();
 
-            ambDataSet = db.AmbientDataSample.ToList(); //.Take(1000).ToList();
-            numBars = ambDataSet.Count; // db.AmbientDataSample.Count();
+                ambDataSet = db.AmbientDataSample.ToList(); //.Take(1000).ToList();
+                numBars = ambDataSet.Count; // db.AmbientDataSample.Count();
 
-            Busy.SetBusy(false);
-            DataLoaded();
+                Busy.SetBusy(false);
+                DataLoaded();
+            }
         }
         protected void DataLoaded()
         {
