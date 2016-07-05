@@ -42,10 +42,11 @@ namespace myEnvironment.Views
         {
             if (sensorList == null || sensorList.Count == 0)
             {
+                // Page Navigation does not yet work. understand Template 10 navigation before trying again.
                 //Template10.Services.NavigationService.NavigationService.GetForFrame(Frame).Navigate(typeof(SettingsPage));
-                Frame.Navigate(typeof(SettingsPage));
+                //Frame.Navigate(typeof(SettingsPage));
             }
-            else
+            //else
             {
                 LoadData();
                 base.OnNavigatedTo(e);
@@ -70,6 +71,7 @@ namespace myEnvironment.Views
                 DataLoaded();
             }
         }
+         
         protected void DataLoaded()
         {
             int barSampleFactor = 3;

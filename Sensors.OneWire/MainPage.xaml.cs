@@ -33,7 +33,8 @@ namespace Sensors.OneWire
         StorageFolder storageFolder = ApplicationData.Current.LocalFolder; //.RoamingFolder;
         ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         CloudBlobContainer container;
-        bool readSensor2 = true;
+        bool readSensor2 = false;
+        bool GpioControllerPresent;
 
         public MainPage()
         {
@@ -43,7 +44,7 @@ namespace Sensors.OneWire
             _timer.Interval = TimeSpan.FromSeconds(60);
             _timer.Tick += _timer_Tick;
             //???
-            var api = Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.Devices.Gpio.GpioController");
+            GpioControllerPresent = Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.Devices.Gpio.GpioController");
             if (localSettings.Values["sensorId"] == null)
             {
                 sensorID = Guid.NewGuid();
@@ -62,18 +63,25 @@ namespace Sensors.OneWire
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            _pin4 = GpioController.GetDefault().OpenPin(4, GpioSharingMode.Exclusive);
-            _pin17 = GpioController.GetDefault().OpenPin(17, GpioSharingMode.Exclusive);
-            //_dht = new Dht11(_pin, GpioPinDriveMode.Input);
-            _dht1 = new Dht22(_pin4, GpioPinDriveMode.Input);
-            if(readSensor2)
-                _dht2 = new Dht11(_pin17, GpioPinDriveMode.Input);
-            _timer.Start();
-            _startedAt = DateTimeOffset.Now;
-            Task.Delay(1000);
-            storageTimer.Start();
-
+            if (GpioControllerPresent && GpioController.GetDefault()!= null)
+            {
+                _pin4 = GpioController.GetDefault().OpenPin(4, GpioSharingMode.Exclusive);
+                
+                _dht1 = new Dht22(_pin4, GpioPinDriveMode.Input);
+                if (readSensor2)
+                {
+                    _dht2 = new Dht11(_pin17, GpioPinDriveMode.Input);
+                    _pin17 = GpioController.GetDefault().OpenPin(17, GpioSharingMode.Exclusive);
+                }
+                _timer.Start();
+                _startedAt = DateTimeOffset.Now;
+                Task.Delay(1000);
+                storageTimer.Start();
+            }
+            else
+            {
+                Humi2.Text = "no sensor found.";
+            }
             // move to default.rd...
             //string storageConnection = "***replace with your azure connection string***";
             string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=X7sIT9AHPXYnECV3T/SjA1fPheJbvHhGzw37OkfifslJvm4VkG1jFcXrGCF20cnciHdQ73CCTPltaanNsUVFHA==";
