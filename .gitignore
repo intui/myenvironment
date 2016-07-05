@@ -247,5 +247,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+#Custom
 myEnvironment/resources/secret/Resources.resw
 myEnvironment/resources/secret/Resources.resw

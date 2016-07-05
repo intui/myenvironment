@@ -59,7 +59,7 @@ namespace myEnvironment.Views
                 Busy.SetBusy(true, "loading data");
 
                 long lastUpdatedTicks = (long)localSettings.Values["lastImport"];
-                localSettings.Values["lastImport"] = await Services.AzureServices.Blob.AzureBlobService.Get_Data(7 * 24, lastUpdatedTicks);
+                localSettings.Values["lastImport"] = await Services.AzureServices.Blob.AzureBlobService.Get_Data(14 * 24, lastUpdatedTicks);
 
                 await Task.Delay(400);
                 db = new SensorContext();
