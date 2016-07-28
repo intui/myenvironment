@@ -13,6 +13,11 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
+using System.Diagnostics;
+using Microsoft.Azure.Devices.Client;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Sensors.OneWire
 {
@@ -35,6 +40,8 @@ namespace Sensors.OneWire
         CloudBlobContainer container;
         bool readSensor2 = false;
         bool GpioControllerPresent;
+        string DeviceConnectionString;
+        DeviceClient deviceClient;
 
         public MainPage()
         {
@@ -57,6 +64,8 @@ namespace Sensors.OneWire
                 sensorID = (Guid) localSettings.Values["sensorId"];
                 lastID = (int)localSettings.Values["lastId"];
             }
+
+
         }
 
 
@@ -82,14 +91,19 @@ namespace Sensors.OneWire
             {
                 Humi2.Text = "no sensor found.";
             }
-            // move to default.rd...
+            //if(!deviceClient...) say: regiser your device.
+
+            var resources = ResourceLoader.GetForCurrentView("Resources");
+            var blobStorageKey = resources.GetString("BlobStorageKey");
+            string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=" + blobStorageKey;
             //string storageConnection = "***replace with your azure connection string***";
-            string storageConnection = "DefaultEndpointsProtocol=https;AccountName=envirodata;AccountKey=X7sIT9AHPXYnECV3T/SjA1fPheJbvHhGzw37OkfifslJvm4VkG1jFcXrGCF20cnciHdQ73CCTPltaanNsUVFHA==";
 
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnection);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             container = blobClient.GetContainerReference("default"); // container name = sensorId - from Alljoyn (create container in Azure if not exists)
 
+            DeviceConnectionString = "DeviceId=" + sensorID + ";" + resources.GetString("IotHubCS");
+            deviceClient = DeviceClient.CreateFromConnectionString(DeviceConnectionString);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -129,6 +143,14 @@ namespace Sensors.OneWire
 				this.OnPropertyChanged(nameof(SuccessRate));
                 DataItem myItem = new DataItem(lastID++, sensorID, DateTime.Now, (float)reading.Temperature, (float)reading.Humidity);
                 itemList.Add(myItem);
+                try
+                {
+                    sendToIotHub(myItem);
+                }
+                catch(Exception ex) //DeviceNotFoundException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
             this.OnPropertyChanged(nameof(LastUpdatedDisplay));
 
@@ -143,6 +165,16 @@ namespace Sensors.OneWire
                 }
             }
         }
+
+        private async void sendToIotHub(DataItem myItem)
+        {
+            var jsonString = JsonConvert.SerializeObject(myItem);
+            jsonString = myItem.Stringify(); //??
+            var jsonStringInBytes = new Message(Encoding.ASCII.GetBytes(jsonString));
+            await deviceClient.SendEventAsync(jsonStringInBytes);
+            Debug.WriteLine("{0} > Sending message: {1}", DateTime.UtcNow, jsonString);
+        }
+
         private async void StorageTimer_Tick(object sender, object e)
         {
             if (itemList.Count == 0)

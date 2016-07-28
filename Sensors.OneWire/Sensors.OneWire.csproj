@@ -92,6 +92,7 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="project.json" />
+    <PRIResource Include="resources\secret\Resources.resw" />
     <None Include="Sensors.OneWire_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

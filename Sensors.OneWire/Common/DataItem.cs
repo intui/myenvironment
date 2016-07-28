@@ -12,15 +12,15 @@ namespace Sensors.OneWire.Common
         int ID { get; set; }
         Guid sensorID { get; set; }
         public DateTime captureTime { get; set; }
-        float temperature { get; set; }
-        float humidity { get; set; }
+        double temperature { get; set; }
+        double humidity { get; set; }
         public DataItem(int ID, Guid sensorID, DateTime captureTime, float temperature, float humidity)
         {
             this.ID = ID;
             this.sensorID = sensorID;
             this.captureTime = captureTime;
-            this.temperature = temperature;
-            this.humidity = humidity;
+            this.temperature = Math.Round(temperature, 1);
+            this.humidity = Math.Round(humidity, 1);
         }
         public string Stringify()
         {
