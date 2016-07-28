@@ -251,3 +251,4 @@ ModelManifest.xml
 #Custom
 myEnvironment/resources/secret/Resources.resw
 myEnvironment/resources/secret/Resources.resw
+/Sensors.OneWire/resources/secret

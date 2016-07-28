@@ -113,6 +113,8 @@
     <Compile Include="Models\SensorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AzureServices\Blob\AzureBlobService.cs" />
+    <Compile Include="Services\AzureServices\SQLDB\AzureSQLService.cs" />
+    <Compile Include="Services\AzureServices\IAzureService.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\DetailPageViewModel.cs" />
