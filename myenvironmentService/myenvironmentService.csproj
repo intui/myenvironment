@@ -180,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\myenvironment - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\myenvironment - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\myenvironment - Web Deploy.pubxml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
